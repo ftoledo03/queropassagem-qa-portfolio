@@ -4,5 +4,6 @@ export const hotelSearchSelectors = {
   checkoutInput: { role: 'textbox' as const, name: 'Check-out' },
   guestsInput: '#hospede-input-field input',
   verQuartosButton: 'a.ver_quartos',
-  selecionarButton: { role: 'button' as const, name: 'Selecionado' },
+  selecionarButton: { role: 'button' as const, name: 'Selecionar' },
+  reservarButton: { role: 'button' as const, name: 'Reservar' },
 };
