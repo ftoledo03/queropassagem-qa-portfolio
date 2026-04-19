@@ -1,26 +1,31 @@
 import { Page } from '@playwright/test';
 import { hotelSearchSelectors as s } from '../selectors/hotelSearchSelectors';
+import { HotelSearchPage } from './HotelSearchPage';
 
 export class HotelRoomsPage {
-  constructor(private page: Page) {}
+  constructor(private hotelSearch: HotelSearchPage) {}
+
+  get page(): Page {
+    return this.hotelSearch.page;
+  }
 
   async clickFirstSelecionar() {
-  await this.page.getByRole(s.selecionarButton.role, { name: s.selecionarButton.name }).first().click();
-  
-  const continuar = this.page.getByRole('button', { name: 'CONTINUAR' });
-  if (await continuar.isVisible()) {
-    await continuar.click();
+    await this.page.getByRole(s.selectRoomButton.role, { name: s.selectRoomButton.name }).first().click();
+
+    const continuar = this.page.getByRole('button', { name: 'CONTINUAR' });
+    if (await continuar.isVisible({ timeout: 3000 }).catch(() => false)) {
+      await continuar.click();
+    }
   }
-}
 
   async clickReservar() {
-  await this.page.locator('#dadosReserva').getByRole(s.reservarButton.role, { name: s.reservarButton.name }).click();
-  
-  const continuar = this.page.locator('button.continuar');
-  if (await continuar.isVisible({ timeout: 5000 }).catch(() => false)) {
-    await continuar.click();
-  }
+    await this.page.locator('#dadosReserva').getByRole(s.bookRoomButton.role, { name: s.bookRoomButton.name }).click();
 
-  await this.page.waitForURL(/pagamento|checkout/, { timeout: 60000 });
-}
+    const continuar = this.page.locator('button.continuar');
+    if (await continuar.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await continuar.click();
+    }
+
+    await this.page.waitForURL(/pagamento|checkout/, { timeout: 60000 });
+  }
 }

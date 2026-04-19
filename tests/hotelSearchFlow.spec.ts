@@ -6,6 +6,7 @@ import { CheckoutPage } from '../pages/CheckoutPage';
 test.describe('Fluxo completo - Busca e Seleção de Hotel', () => {
 
   test('Fluxo de ponta a ponta: busca, quartos e seleção', async ({ page }) => {
+    //test.setTimeout(120000); // 2 minutos 
     const hotelSearch = new HotelSearchPage(page);
 
     await test.step('Deve realizar uma busca válida de hotel', async () => {
@@ -14,24 +15,22 @@ test.describe('Fluxo completo - Busca e Seleção de Hotel', () => {
 
       await expect(page).toHaveURL(/sao-paulo-sp/);
       await expect(page.getByRole('heading', { name: /propriedades/ })).toBeVisible();
-      await page.waitForTimeout(2000);
     });
 
     await test.step('Deve clicar em Ver Quartos do primeiro hotel', async () => {
       await hotelSearch.clickFirstVerQuartos();
-
       await expect(hotelSearch.page).toHaveURL(/hoteis\/busca\/sao-paulo-sp/);
       await hotelSearch.page.waitForTimeout(2000);
     });
 
     await test.step('Deve selecionar o primeiro quarto disponível', async () => {
-      const hotelRooms = new HotelRoomsPage(hotelSearch.page);
+      const hotelRooms = new HotelRoomsPage(hotelSearch);
       await hotelRooms.clickFirstSelecionar();
       await hotelSearch.page.waitForTimeout(2000);
     });
 
     await test.step('Deve clicar em Reservar', async () => {
-      const hotelRooms = new HotelRoomsPage(hotelSearch.page);
+      const hotelRooms = new HotelRoomsPage(hotelSearch);
       await hotelRooms.clickReservar();
 
       await expect(hotelSearch.page).toHaveURL(/pagamento|checkout/);
@@ -42,8 +41,8 @@ test.describe('Fluxo completo - Busca e Seleção de Hotel', () => {
       const checkout = new CheckoutPage(hotelSearch.page);
 
       await checkout.fillDadosHospede([
-        { nome: 'John Doe', cpf: '723.414.540-03' },
-        { nome: 'Jane Doe', cpf: '987.654.321-00' },
+        { nome: 'Jorge Toledo', cpf: '723.414.540-03' },
+        { nome: 'Felipe Toledo', cpf: '987.654.321-00' },
       ]);
       await checkout.fillDadosComprador('jftoledoqa@gmail.com', '(35) 98722-3268');
       await checkout.selectCartaoCredito();

@@ -27,10 +27,9 @@ export class CheckoutPage {
     await this.page.locator('input[formcontrolname="email_c"]').fill(email);
     await this.page.locator('input[formcontrolname="fone"]').fill(telefone);
   }
-
-  async fillEndereco(cep: string, logradouro: string, numero: string, complemento: string, bairro: string) {
+async fillEndereco(cep: string, logradouro: string, numero: string, complemento: string, bairro: string) {
   await this.page.locator('input[formcontrolname="cep"]').fill(cep);
-  await this.page.waitForTimeout(2000);
+  await this.page.waitForTimeout(3000);
   await this.page.locator('input[formcontrolname="endereco"]').fill(logradouro);
   await this.page.locator('input[formcontrolname="numero"]').fill(numero);
   await this.page.locator('input[formcontrolname="complemento"]').fill(complemento);
